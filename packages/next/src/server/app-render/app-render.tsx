@@ -2925,7 +2925,7 @@ async function prerenderAppPage({
 }
 
 async function renderAppPage(
-  handleAction: AppPageActionHandler,
+  handleAction: AppPageActionHandler | null,
   requestHeaders: IncomingHttpHeaders,
   onUpdateCookies: RenderOpts['onUpdateCookies'],
   { ctx, metadata, loaderTree }: PreparedAppPageRender,
@@ -3057,7 +3057,7 @@ async function renderAppPage(
 
   let didExecuteServerAction = false
   let formState: null | any = null
-  if (isPossibleActionRequest) {
+  if (handleAction !== null) {
     // For action requests, we handle them differently with a special render result.
     const actionRequestResult = await handleAction({
       ComponentMod,
@@ -3205,7 +3205,7 @@ async function renderAppPage(
 }
 
 async function renderToHTMLOrFlightImpl(
-  handleAction: AppPageActionHandler,
+  handleAction: AppPageActionHandler | null,
   responseStatus: RenderStatus,
   responseHeaders: RenderHeaderSink,
   requestUrl: string,
@@ -3328,7 +3328,7 @@ async function prerenderToHTMLOrFlightImpl(
 }
 
 export type AppPageRender = (
-  handleAction: AppPageActionHandler,
+  handleAction: AppPageActionHandler | null,
   responseStatus: RenderStatus,
   responseHeaders: RenderHeaderSink,
   requestUrl: string,
